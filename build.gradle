@@ -1,0 +1,104 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url = "http://files.minecraftforge.net/maven" }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+apply plugin: 'net.minecraftforge.gradle.forge'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
+
+
+def mcVersion = "1.12.2"
+def modMajor = "0"
+def modMinor = "9"
+def modPatch = "0"
+
+version = "${mcVersion}-${modMajor}.${modMinor}.${modPatch}"
+group = "xt9.deepmoblearningbm" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "deepmoblearningbm"
+
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    version = "1.12.2-14.23.4.2705"
+    runDir = "run"
+    
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = "snapshot_20171003"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+
+    replaceIn "Constants.java"
+    replace "@VERSION@", project.version.toString()
+}
+
+repositories {
+    maven {
+        // location of the maven that hosts JEI files
+        name = "Progwml6 maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        // location of a maven mirror for JEI files, as a fallback
+        name = "ModMaven"
+        url = "modmaven.k-4u.nl"
+    }
+    maven { // GuideAPI
+        name = "Tehnut Maven"
+        url = "http://tehnut.info/maven/"
+    }
+    maven {
+        name = "CurseForge"
+        url = "https://minecraft.curseforge.com/api/maven/"
+    }
+}
+
+dependencies {
+    // compile against the JEI API but do not include it at runtime
+    deobfProvided "mezz.jei:jei_${mcVersion}:4.10.0.201:api"
+    // at runtime, use the full JEI jar
+    runtime "mezz.jei:jei_${mcVersion}:4.10.0.201"
+
+    compile 'cofhcore:CoFHCore-1.12.2:release:universal'
+    compile 'thermal-foundation:ThermalFoundation-1.12.2:release:universal'
+
+    compile "blood-magic:BloodMagic-1.12.2:2.2.12:97"
+
+    // GuideAPI for DML & BM
+    deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.5-60"
+    // Require DML
+    compile 'deep-mob-learning:deepmoblearning-1.12.2:release:universal'
+    // Require Twilight forest since it adds a new living matter type
+    compile 'the-twilight-forest:twilightforest-1.12.2:release:universal'
+}
+
+processResources {
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else except the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

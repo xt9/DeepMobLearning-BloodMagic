@@ -35,13 +35,15 @@ import javax.annotation.Nullable;
 @SuppressWarnings("FieldCanBeLocal")
 public class BlockDigitalAgonizer extends Block implements ITileEntityProvider {
     private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
-    private String name = "blockDigitalAgonizer";
+    private String name = "digital_agonizer";
 
     public BlockDigitalAgonizer() {
         super(Material.ROCK);
         setUnlocalizedName(ModConstants.MODID + "." + name);
         setCreativeTab(DeepMobLearningBM.creativeTab);
         setRegistryName(name);
+        setHardness(4f);
+        setResistance(10.0f);
         setLightLevel(1F);
     }
 

@@ -39,6 +39,7 @@ public class ContainerDigitalAgonizer extends Container {
         if(!world.isRemote) {
             // Update the tile every tick while container is open
             tile.updateState(false);
+            tile.updateSacrificeRuneCount();
         }
     }
 

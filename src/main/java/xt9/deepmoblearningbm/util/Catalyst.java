@@ -9,7 +9,7 @@ import xt9.deepmoblearningbm.ModConfig;
  * Created by xt9 on 2018-07-01.
  */
 public class Catalyst {
-    private static NonNullList<Catalyst> catalysts = NonNullList.create();
+    public static NonNullList<Catalyst> catalysts = NonNullList.create();
     private ItemStack stack;
     private double multiplier;
     private int operations;
@@ -21,15 +21,19 @@ public class Catalyst {
     }
 
     public static void init() {
-        addCatalyst(Registry.glitchHeart, ModConfig.essenceMultiplierSubCat.getHeartCatalystMultiplier(), 100);
         addCatalyst(Registry.livingMatterOverworldian, ModConfig.essenceMultiplierSubCat.getOverworldianCatalystMultiplier(), 10);
         addCatalyst(Registry.livingMatterHellish, ModConfig.essenceMultiplierSubCat.getHellishCatalystMultiplier(), 10);
         addCatalyst(Registry.livingMatterExtraterrestrial, ModConfig.essenceMultiplierSubCat.getExtraterrestrialCatalystMultiplier(), 10);
         addCatalyst(Registry.livingMatterTwilight, ModConfig.essenceMultiplierSubCat.getTwilightCatalystMultiplier(), 10);
+        addCatalyst(Registry.glitchHeart, ModConfig.essenceMultiplierSubCat.getHeartCatalystMultiplier(), 100);
     }
 
     public static void addCatalyst(Item item, double multiplier, int operations) {
         catalysts.add(new Catalyst(item, multiplier, operations));
+    }
+
+    public ItemStack getStack() {
+        return stack;
     }
 
     public int getOperations() {

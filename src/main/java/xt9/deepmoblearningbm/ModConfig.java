@@ -42,25 +42,25 @@ public class ModConfig {
     }
 
     public static class EssenceBaseAmountsSubCategory {
-        @Config.Comment({"Default: 100"})
+        @Config.Comment({"Default: 50"})
         @Config.Name("Tier 1 Data Model - Essence per operation")
         @Config.RangeInt(min = 1, max = 2000)
-        public int tierOneEssenceAmount = 100;
+        public int tierOneEssenceAmount = 50;
 
-        @Config.Comment({"Default: 200"})
+        @Config.Comment({"Default: 75"})
         @Config.Name("Tier 2 Data Model - Essence per operation")
         @Config.RangeInt(min = 1, max = 2000)
-        public int tierTwoEssenceAmount = 200;
+        public int tierTwoEssenceAmount = 75;
 
-        @Config.Comment({"Default: 350"})
+        @Config.Comment({"Default: 150"})
         @Config.Name("Tier 3 Data Model - Essence per operation")
         @Config.RangeInt(min = 1, max = 2000)
-        public int tierThreeEssenceAmount = 350;
+        public int tierThreeEssenceAmount = 150;
 
-        @Config.Comment({"Default: 350"})
+        @Config.Comment({"Default: 300"})
         @Config.Name("Tier 4 Data Model - Essence per operation")
         @Config.RangeInt(min = 1, max = 2000)
-        public int tierFourEssenceAmount = 600;
+        public int tierFourEssenceAmount = 300;
 
         public int getTierEssenceAmount(int tier) {
             switch (tier) {
@@ -77,7 +77,7 @@ public class ModConfig {
         @Config.Comment({"Default: 5.0"})
         @Config.Name("#1 Multiplier of Corrupted Glitch Heart")
         @Config.RangeDouble(min = 1.0, max = 10.0)
-        public double heartCatalystMultiplier = 5.0;
+        public double heartCatalystMultiplier = 3.0;
         public double getHeartCatalystMultiplier() {
             return MathHelper.ensureRange(heartCatalystMultiplier, 1.0, 10.0);
         }

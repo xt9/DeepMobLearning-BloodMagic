@@ -12,6 +12,14 @@ import org.lwjgl.opengl.GL11;
 public class FluidRenderHelper {
     private static Minecraft mc = Minecraft.getMinecraft();
 
+    //FluidStack fluidStack = tile.getTank().getFluid();
+    //if(fluidStack != null) {
+    //TextureAtlasSprite sprite = mc.getTextureMapBlocks().getAtlasSprite(fluidStack.getFluid().getStill(fluidStack).toString());
+    //int filledAmount = (int) (((float) tile.getTank().getFluidAmount() / tile.getTank().getCapacity() * 49));
+    //int offset = 49 - filledAmount;
+    //FluidRenderHelper.renderTiledTextureAtlas(left + 131, top + 17 + offset, 16, filledAmount, 100, sprite);
+    //}
+
     /*
      * The following code is a slightly altered version of the renderTiledTextureAtlas method in Tinkers Construct
      * https://github.com/SlimeKnights/TinkersConstruct/blob/master/src/main/java/slimeknights/tconstruct/library/client/GuiUtil.java#L45-L54

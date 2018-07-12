@@ -3,11 +3,12 @@ package xt9.deepmoblearningbm;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -19,11 +20,10 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import xt9.deepmoblearningbm.client.gui.DigitalAgonizerGui;
 import xt9.deepmoblearningbm.common.Registry;
 import xt9.deepmoblearningbm.common.ServerProxy;
-import xt9.deepmoblearningbm.common.inventory.ContainerDigitalAgonizer;
-import xt9.deepmoblearningbm.common.tile.TileEntityDigitalAgonizer;
+import xt9.deepmoblearningbm.common.network.HighlightAltarMessage;
+import xt9.deepmoblearningbm.common.tile.IContainerProvider;
 import xt9.deepmoblearningbm.util.Catalyst;
 
 /**
@@ -32,6 +32,7 @@ import xt9.deepmoblearningbm.util.Catalyst;
 @Mod(modid = ModConstants.MODID, version = ModConstants.VERSION, dependencies = "required-after:deepmoblearning;required-after:bloodmagic;after:jei;after:twilightforest")
 @Mod.EventBusSubscriber
 public class DeepMobLearningBM {
+    private int networkID = 0;
 
     @Mod.Instance(ModConstants.MODID)
     public static DeepMobLearningBM instance;
@@ -46,6 +47,7 @@ public class DeepMobLearningBM {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         network = NetworkRegistry.INSTANCE.newSimpleChannel(ModConstants.MODID);
+        network.registerMessage(HighlightAltarMessage.Handler.class, HighlightAltarMessage.class, networkID++, Side.SERVER);
     }
 
     @SubscribeEvent
@@ -58,16 +60,22 @@ public class DeepMobLearningBM {
         Registry.registerItems(event.getRegistry());
     }
 
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        Registry.registerItemModels();
+    }
+
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         Catalyst.init();
-
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new IGuiHandler() {
             public Object getServerGuiElement(int i, EntityPlayer player, World world, int x, int y, int z) {
-                return i == TileEntityDigitalAgonizer.GUI_ID ? new ContainerDigitalAgonizer((TileEntityDigitalAgonizer) world.getTileEntity(new BlockPos(x, y, z)), player.inventory, world) : null;
+                TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+                return tile instanceof IContainerProvider ? ((IContainerProvider) tile).getContainer(tile, player, world, x, y, z) : null;
             }
             public Object getClientGuiElement(int i, EntityPlayer player, World world, int x, int y, int z) {
-                return i == TileEntityDigitalAgonizer.GUI_ID ? new DigitalAgonizerGui((TileEntityDigitalAgonizer) world.getTileEntity(new BlockPos(x, y, z)), player.inventory, world) : null;
+                TileEntity tile = world.getTileEntity(new BlockPos(x, y, z));
+                return tile instanceof IContainerProvider ? ((IContainerProvider) tile).getGui(tile, player, world, x, y, z) : null;
             }
         });
     }

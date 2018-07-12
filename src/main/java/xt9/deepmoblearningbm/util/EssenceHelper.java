@@ -1,9 +1,6 @@
 package xt9.deepmoblearningbm.util;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import xt9.deepmoblearning.common.items.ItemGlitchHeart;
-import xt9.deepmoblearning.common.items.ItemLivingMatter;
 import xt9.deepmoblearning.common.util.DataModel;
 import xt9.deepmoblearningbm.ModConfig;
 

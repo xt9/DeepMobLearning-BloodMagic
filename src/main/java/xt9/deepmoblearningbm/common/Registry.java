@@ -7,9 +7,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
+import xt9.deepmoblearningbm.DeepMobLearningBM;
 import xt9.deepmoblearningbm.ModConstants;
 import xt9.deepmoblearningbm.common.blocks.BlockDigitalAgonizer;
-import xt9.deepmoblearningbm.common.items.ItemAgonizerLinker;
+import xt9.deepmoblearningbm.common.items.ItemAltarLinker;
 import xt9.deepmoblearningbm.common.tile.TileEntityDigitalAgonizer;
 
 /**
@@ -18,7 +19,7 @@ import xt9.deepmoblearningbm.common.tile.TileEntityDigitalAgonizer;
 public class Registry {
     private static BlockDigitalAgonizer blockDigitalAgonizer = new BlockDigitalAgonizer();
     public static Item blockDigitalAgonizerItem = new ItemBlock(blockDigitalAgonizer).setRegistryName(blockDigitalAgonizer.getRegistryName());
-    public static ItemAgonizerLinker itemAgonizerLinker = new ItemAgonizerLinker();
+    public static ItemAltarLinker itemAltarLinker = new ItemAltarLinker();
 
     private static NonNullList<Block> blocks = NonNullList.create();
     private static NonNullList<Item> itemBlocks = NonNullList.create();
@@ -28,24 +29,32 @@ public class Registry {
     public static void registerBlocks(IForgeRegistry registry) {
         if(ModConstants.MOD_BM_LOADED) {
             blocks.add(blockDigitalAgonizer);
+            blocks.forEach(registry::register);
+            registerTileEntities();
         }
-        blocks.forEach(registry::register);
-        registerTileEntities();
     }
 
     @SuppressWarnings({"ConstantConditions", "unchecked"})
     public static void registerItems(IForgeRegistry registry) {
         if(ModConstants.MOD_BM_LOADED) {
             itemBlocks.add(blockDigitalAgonizerItem);
-            items.add(itemAgonizerLinker);
+            items.add(itemAltarLinker);
         }
         itemBlocks.forEach(registry::register);
         items.forEach(registry::register);
     }
 
     private static void registerTileEntities() {
-        if(ModConstants.MOD_BM_LOADED) {
-            GameRegistry.registerTileEntity(TileEntityDigitalAgonizer.class, new ResourceLocation(ModConstants.MODID, "digital_agonizer"));
+        GameRegistry.registerTileEntity(TileEntityDigitalAgonizer.class, new ResourceLocation(ModConstants.MODID, "digital_agonizer"));
+    }
+
+    public static void registerItemModels() {
+        for (Block block : blocks) {
+            DeepMobLearningBM.proxy.registerItemRenderer(Item.getItemFromBlock(block), block.getRegistryName(), 0);
+        }
+
+        for (Item item : items) {
+            DeepMobLearningBM.proxy.registerItemRenderer(item, item.getRegistryName(), 0);
         }
     }
 }

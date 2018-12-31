@@ -3,6 +3,7 @@ package xt9.deepmoblearningbm.util;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import xt9.deepmoblearning.DeepConstants;
 import xt9.deepmoblearning.common.Registry;
 import xt9.deepmoblearningbm.ModConfig;
 /**
@@ -24,8 +25,11 @@ public class Catalyst {
         addCatalyst(Registry.livingMatterOverworldian, ModConfig.essenceMultiplierSubCat.getOverworldianCatalystMultiplier(), 10);
         addCatalyst(Registry.livingMatterHellish, ModConfig.essenceMultiplierSubCat.getHellishCatalystMultiplier(), 10);
         addCatalyst(Registry.livingMatterExtraterrestrial, ModConfig.essenceMultiplierSubCat.getExtraterrestrialCatalystMultiplier(), 10);
-        addCatalyst(Registry.livingMatterTwilight, ModConfig.essenceMultiplierSubCat.getTwilightCatalystMultiplier(), 10);
         addCatalyst(Registry.glitchHeart, ModConfig.essenceMultiplierSubCat.getHeartCatalystMultiplier(), 100);
+
+        if (DeepConstants.MOD_TWILIGHT_LOADED) {
+            addCatalyst(Registry.livingMatterTwilight, ModConfig.essenceMultiplierSubCat.getTwilightCatalystMultiplier(), 10);
+        }
     }
 
     public static void addCatalyst(Item item, double multiplier, int operations) {

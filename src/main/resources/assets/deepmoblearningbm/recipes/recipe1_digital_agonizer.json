@@ -7,7 +7,7 @@
   ],
   "key": {
     "M": { "item": "deepmoblearning:machine_casing", "data": 0 },
-    "S": { "item": "bloodmagic:slate", "data": 1 },
+    "S": { "item": "bloodmagic:slate", "data": 2 },
     "R": { "item": "bloodmagic:blood_rune", "data": 3 },
     "C": { "item": "minecraft:comparator", "data": 0 },
     "D": { "item": "minecraft:dye", "data": 1 }

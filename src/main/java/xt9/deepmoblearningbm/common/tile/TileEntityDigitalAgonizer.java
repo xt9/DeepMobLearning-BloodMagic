@@ -69,9 +69,7 @@ public class TileEntityDigitalAgonizer extends TileEntity implements ITickable, 
             }
 
             if(catalystOperations == 0) {
-                if (hasValidCatalyst()) {
-                    consumeCatalyst();
-                }
+                consumeCatalyst();
             }
 
             if(canContinueCraft()) {

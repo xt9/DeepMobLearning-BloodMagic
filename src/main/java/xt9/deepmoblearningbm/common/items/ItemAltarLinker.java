@@ -3,6 +3,7 @@ package xt9.deepmoblearningbm.common.items;
 import WayofTime.bloodmagic.tile.TileAltar;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -14,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import xt9.deepmoblearning.common.util.ItemStackNBTHelper;
+import xt9.deepmoblearningbm.ModConfig;
 import xt9.deepmoblearningbm.common.blocks.BlockDigitalAgonizer;
 import xt9.deepmoblearningbm.common.tile.TileEntityDigitalAgonizer;
 
@@ -68,6 +70,13 @@ public class ItemAltarLinker extends ItemBase {
                     if(hasTargetAgonizer(agonizerLinker)) {
                         BlockPos agonizerPos = BlockPos.fromLong(getTargetAgonizerPos(agonizerLinker));
 
+                        if(!ModConfig.isMultipleAgonizersAllowed) {
+                            if(isAltarLinked(world, pos, agonizerPos)) {
+                                player.sendStatusMessage(new TextComponentString("Altar is already linked to an Agonizer."), true);
+                                return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+                            }
+                        }
+
                         if(getBlockDistance(pos, agonizerPos) <= linkingRange) {
                             if (isBlockDigitalAgonizerAtPos(world, agonizerPos)) {
                                 TileEntityDigitalAgonizer tile = getAgonizerFromPos(world, agonizerPos);
@@ -84,6 +93,23 @@ public class ItemAltarLinker extends ItemBase {
         }
 
         return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+    }
+
+    private boolean isAltarLinked(World world, BlockPos altarPos, BlockPos currentAgonizerPos) {
+        Iterable<BlockPos> altarSurroundings = BlockPos.getAllInBox(
+            new BlockPos(altarPos.getX() - 50, altarPos.getY() - 50, altarPos.getZ() - 50),
+            new BlockPos(altarPos.getX() + 50, altarPos.getY() + 50, altarPos.getZ() + 50)
+        );
+
+        for (BlockPos blockPos : altarSurroundings) {
+            if(isBlockDigitalAgonizerAtPos(world, blockPos) && !blockPos.equals(currentAgonizerPos)){
+                TileEntityDigitalAgonizer tile = getAgonizerFromPos(world, blockPos);
+                if(isValidAltar(world, tile.getAltarPos())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /* Maths: http://www.meracalculator.com/math/distance-between-2-points(3-dim).php */

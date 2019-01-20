@@ -1,12 +1,9 @@
 package xt9.deepmoblearningbm;
 
-import net.minecraft.item.Item;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import xt9.deepmoblearning.common.items.ItemGlitchHeart;
-import xt9.deepmoblearning.common.items.ItemLivingMatter;
 import xt9.deepmoblearningbm.util.MathHelper;
 import net.minecraftforge.common.config.*;
 
@@ -40,6 +37,12 @@ public class ModConfig {
     public static int getAgonizerRFCost() {
         return MathHelper.ensureRange(agonizerRFCost, 1, 10000);
     }
+
+    @Config.Comment({
+        "Default: false"
+    })
+    @Config.Name("Allow multiple agonizers linked with one Altar")
+    public static boolean isMultipleAgonizersAllowed = false;
 
     public static class EssenceBaseAmountsSubCategory {
         @Config.Comment({"Default: 50"})

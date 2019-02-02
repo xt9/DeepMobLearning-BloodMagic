@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " D ",
-    "SMS",
+    " S ",
+    "IMI",
     "RCR"
   ],
   "key": {
     "M": { "item": "deepmoblearning:machine_casing", "data": 0 },
-    "S": { "item": "bloodmagic:slate", "data": 2 },
+    "S": { "item": "bloodmagic:slate", "data": 3 },
     "R": { "item": "bloodmagic:blood_rune", "data": 3 },
     "C": { "item": "minecraft:comparator", "data": 0 },
-    "D": { "item": "minecraft:dye", "data": 1 }
+    "I": { "item": "bloodmagic:inscription_tool", "data": 5 }
   },
   "result": {
     "item": "deepmoblearningbm:digital_agonizer",

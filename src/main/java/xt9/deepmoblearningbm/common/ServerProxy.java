@@ -2,7 +2,10 @@ package xt9.deepmoblearningbm.common;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,6 +19,13 @@ public class ServerProxy {
         IBlockState state = world.getBlockState(pos);
         // Notify on open so we trigger the TE's getUpdateTag
         world.notifyBlockUpdate(pos, state, state, 3);
+
+        ItemStack mainHandItem = player.getHeldItem(EnumHand.MAIN_HAND);
+        ItemStack offHandItem = player.getHeldItem(EnumHand.OFF_HAND);
+        if(mainHandItem.getItem().getToolClasses(mainHandItem).contains("wrench") || offHandItem.getItem().getToolClasses(offHandItem).contains("wrench")) {
+            return;
+        }
+
         player.openGui(DeepMobLearningBM.instance, id, player.world, pos.getX(), pos.getY(), pos.getZ());
     }
 

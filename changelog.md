@@ -1,5 +1,9 @@
 # 1.12.2
 
+### 1.0.1
+- Wrenching the Digital Agonizer no longer void it's inventory
+- GUI is no longer opened if the player is holding a wrench.
+
 ### 1.0.0
 - Tweaked the Digital Agonizer recipe again (last time promise)
 - Tweaked the default catalyst values, they were a bit low since the default with no catalyst is  1x

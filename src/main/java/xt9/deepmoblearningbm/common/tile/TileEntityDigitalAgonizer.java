@@ -295,6 +295,11 @@ public class TileEntityDigitalAgonizer extends TileEntity implements ITickable, 
     }
 
     @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+        return oldState.getBlock() != newState.getBlock();
+    }
+
+    @Override
     public boolean hasCapability(Capability capability, @Nullable EnumFacing facing) {
         return capability == CapabilityEnergy.ENERGY || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }

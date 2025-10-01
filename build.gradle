@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
@@ -26,7 +26,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.12.2-14.23.4.2705"
+    version = "1.12.2-14.23.5.2847"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
@@ -52,41 +52,41 @@ repositories {
         url = "http://dvs1.progwml6.com/files/maven"
     }
     maven {
-        url = "https://maven.blamejared.com"
-    }
-    maven {
         // location of a maven mirror for JEI files, as a fallback
         name = "ModMaven"
         url = "modmaven.k-4u.nl"
     }
-    maven { // GuideAPI
-        name = "Tehnut Maven"
-        url = "http://tehnut.info/maven/"
-    }
     maven {
         name = "CurseForge"
-        url = "https://minecraft.curseforge.com/api/maven/"
+        url = "https://minecraft.curseforge.com/api/maven"
+    }
+    maven {
+        name = 'Curse Maven'
+        url = 'https://www.cursemaven.com'
+    }
+    maven {
+        name 'Cleanroom Maven'
+        url 'https://maven.cleanroommc.com'
+    }
+    maven {
+        name 'BlameJared Maven'
+        url 'https://maven.blamejared.com'
+    }
+    maven {
+        name 'GTNH Maven'
+        url 'https://nexus.gtnewhorizons.com/repository/public/'
     }
 }
 
 dependencies {
     // compile against the JEI API but do not include it at runtime
-    deobfProvided "mezz.jei:jei_${mcVersion}:4.10.0.201:api"
-    // at runtime, use the full JEI jar
-    runtime "mezz.jei:jei_${mcVersion}:4.10.0.201"
-
-    compile "vazkii.patchouli:Patchouli:1.0-14.68"
-    compile 'cofhcore:CoFHCore-1.12.2:release:universal'
-    compile 'thermal-foundation:ThermalFoundation-1.12.2:release:universal'
+    implementation "mezz.jei:jei_1.12.2:4.16.1.302:api"
+    compile "vazkii.patchouli:Patchouli:1.0-23.6"
 
     compile "blood-magic:BloodMagic-1.12.2:2.2.12:97"
 
-    // GuideAPI for DML & BM
-    deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.5-60"
     // Require DML
     compile 'deep-mob-learning:deepmoblearning-1.12.2:release:universal'
-    // Require Twilight forest since it adds a new living matter type
-    compile 'the-twilight-forest:twilightforest-1.12.2:release:universal'
 }
 
 processResources {

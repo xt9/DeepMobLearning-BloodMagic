@@ -3,7 +3,6 @@ package xt9.deepmoblearningbm.common.items;
 import WayofTime.bloodmagic.tile.TileAltar;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -71,7 +70,7 @@ public class ItemAltarLinker extends ItemBase {
                         BlockPos agonizerPos = BlockPos.fromLong(getTargetAgonizerPos(agonizerLinker));
 
                         if(!ModConfig.isMultipleAgonizersAllowed) {
-                            if(isAltarLinked(world, pos, agonizerPos)) {
+                            if(isAltarLinked(pos)) {
                                 player.sendStatusMessage(new TextComponentString("Altar is already linked to an Agonizer."), true);
                                 return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
                             }
@@ -95,21 +94,10 @@ public class ItemAltarLinker extends ItemBase {
         return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
     }
 
-    private boolean isAltarLinked(World world, BlockPos altarPos, BlockPos currentAgonizerPos) {
-        Iterable<BlockPos> altarSurroundings = BlockPos.getAllInBox(
-            new BlockPos(altarPos.getX() - 50, altarPos.getY() - 50, altarPos.getZ() - 50),
-            new BlockPos(altarPos.getX() + 50, altarPos.getY() + 50, altarPos.getZ() + 50)
-        );
-
-        for (BlockPos blockPos : altarSurroundings) {
-            if(isBlockDigitalAgonizerAtPos(world, blockPos) && !blockPos.equals(currentAgonizerPos)){
-                TileEntityDigitalAgonizer tile = getAgonizerFromPos(world, blockPos);
-                if(isValidAltar(world, tile.getAltarPos())) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    private boolean isAltarLinked(BlockPos altarPos) {
+        return TileEntityDigitalAgonizer.linkedPositions.values()
+                .stream()
+                .anyMatch(pos -> pos.equals(altarPos));
     }
 
     /* Maths: http://www.meracalculator.com/math/distance-between-2-points(3-dim).php */

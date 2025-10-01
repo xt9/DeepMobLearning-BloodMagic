@@ -19,6 +19,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import xt9.deepmoblearning.common.energy.DeepEnergyStorage;
@@ -36,12 +38,24 @@ import xt9.deepmoblearningbm.util.EssenceHelper;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by xt9 on 2018-06-30.
  */
 public class TileEntityDigitalAgonizer extends TileEntity implements ITickable, IContainerProvider {
+    // Key agonizerPos, value altarPos
+    public static final HashMap<BlockPos, BlockPos> linkedPositions = new HashMap<>();
+
+    public static void registerAgonizerLink(BlockPos agonizerPos, BlockPos altarPos) {
+        linkedPositions.put(agonizerPos, altarPos);
+    }
+
+    public static void deregisterAgonizerLink(BlockPos agonizerPos) {
+        linkedPositions.remove(agonizerPos);
+    }
+
     public static final int GUI_ID = 1;
 
     private BaseItemHandler dataModel = new DataModelHandler();
@@ -166,6 +180,16 @@ public class TileEntityDigitalAgonizer extends TileEntity implements ITickable, 
 
     public void setAltarPos(BlockPos pos) {
         altarPos = pos;
+        if (pos == null) {
+            return;
+        }
+        if (altarPos.getX() == 0 && altarPos.getY() == 0 && altarPos.getZ() == 0) {
+            return;
+        }
+        if (this.pos.getX() == 0 && this.pos.getY() == 0 && this.pos.getZ() == 0) {
+            return;
+        }
+        registerAgonizerLink(this.pos, altarPos);
     }
 
     public BloodAltar getAltarTank() {
@@ -287,10 +311,11 @@ public class TileEntityDigitalAgonizer extends TileEntity implements ITickable, 
         progress = compound.hasKey("progress", Constants.NBT.TAG_INT) ? compound.getInteger("progress") : 0;
         multiplier = compound.hasKey("mutliplier", Constants.NBT.TAG_DOUBLE) ? compound.getDouble("mutliplier") : 1.0;
         numOfSacrificeRunes = compound.hasKey("numOfSacrificeRunes", Constants.NBT.TAG_INT) ? compound.getInteger("numOfSacrificeRunes") : 0;
-        altarPos = compound.hasKey("altarPos", Constants.NBT.TAG_LONG) ? BlockPos.fromLong(compound.getLong("altarPos")) : null;
         dataModel.deserializeNBT(compound.getCompoundTag("dataModel"));
         input.deserializeNBT(compound.getCompoundTag("input"));
         energyCap.readEnergy(compound);
+
+        setAltarPos(compound.hasKey("altarPos", Constants.NBT.TAG_LONG) ? BlockPos.fromLong(compound.getLong("altarPos")) : null);
         super.readFromNBT(compound);
     }
 

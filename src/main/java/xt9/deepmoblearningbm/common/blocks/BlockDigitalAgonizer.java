@@ -85,7 +85,7 @@ public class BlockDigitalAgonizer extends Block implements ITileEntityProvider {
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
-        if(tile instanceof TileEntityDigitalAgonizer) {
+        if (tile instanceof TileEntityDigitalAgonizer) {
             IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             for (int i = 0; i < inventory.getSlots(); i++) {
                 ItemStack stack = inventory.getStackInSlot(i);
@@ -93,6 +93,7 @@ public class BlockDigitalAgonizer extends Block implements ITileEntityProvider {
                 item.setDefaultPickupDelay();
                 world.spawnEntity(item);
             }
+            TileEntityDigitalAgonizer.deregisterAgonizerLink(tile.getPos());
         }
         super.breakBlock(world, pos, state);
     }
